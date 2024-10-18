@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compressed and Expanded Wave Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+        }
+        canvas {
+            border: 1px solid #fff;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="waveCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('waveCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let time = 0;
+
+        function drawWave() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; // Semi-transparent background
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Base frequency and fluctuation
+            const baseFrequency = 0.02;
+            const frequencyFluctuation = 0.02; // Amount to fluctuate frequency
+            const frequency = baseFrequency + frequencyFluctuation * Math.sin(time * 0.1); // Fluctuating frequency
+
+            const amplitude = 50; // Constant amplitude
+            const phaseShift = Math.PI / 2; // Phase shift for opposite wave
+
+            // Draw the first wave
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            for (let x = 0; x < canvas.width; x++) {
+                const y = canvas.height / 2 + amplitude * Math.sin(frequency * x + time);
+                ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'cyan';
+            ctx.stroke();
+
+            // Draw the opposite wave
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            for (let x = 0; x < canvas.width; x++) {
+                const y = canvas.height / 2 + amplitude * Math.sin(frequency * x + time + phaseShift);
+                ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'magenta';
+            ctx.stroke();
+
+            time += 0.3; // Increment time for animation
+            requestAnimationFrame(drawWave);
+        }
+
+        drawWave();
+    </script>
+</body>
+</html>
